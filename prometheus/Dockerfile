@@ -11,11 +11,12 @@ COPY prometheus.yml /etc/prometheus/prometheus.yml
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Ensure the files have the right ownership
-RUN chown nobody:nogroup /entrypoint.sh /etc/prometheus/prometheus.yml
+# Create the cda user and set ownership if it doesn't already exist
+RUN id -u cda &>/dev/null || useradd -m cda
+RUN chown -R cda:cda /entrypoint.sh /etc/prometheus
 
-# Switch to the nobody user
-USER nobody
+# Switch to the cda user
+USER cda
 
 # Set the entrypoint to the script
 ENTRYPOINT ["/entrypoint.sh"]
