@@ -2,14 +2,13 @@ version: '3.8'
 
 services:
   prometheus:
-    build: ./prometheus
+    image: prom/prometheus:latest
     container_name: prometheus
     ports:
       - "9090:9090"
     volumes:
       - prometheus_data:/prometheus
-    depends_on:
-      - node-exporter
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
 
   node-exporter:
     image: prom/node-exporter:latest
