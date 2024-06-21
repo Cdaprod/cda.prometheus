@@ -11,7 +11,10 @@ COPY prometheus.yml /etc/prometheus/prometheus.yml
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Switch back to the default Prometheus user (nobody)
+# Ensure the files have the right ownership
+RUN chown nobody:nogroup /entrypoint.sh /etc/prometheus/prometheus.yml
+
+# Switch to the nobody user
 USER nobody
 
 # Set the entrypoint to the script
